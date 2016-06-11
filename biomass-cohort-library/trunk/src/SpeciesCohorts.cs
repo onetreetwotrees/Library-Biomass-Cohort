@@ -233,7 +233,7 @@ namespace Landis.Library.BiomassCohorts
 
             int biomassChange = (int)Cohorts.BiomassCalculator.ComputeChange(cohort, site); //, siteBiomass, prevYearSiteMortality);
 
-            Debug.Assert(-(cohort.Biomass) <= biomassChange);  // Cohort can't loss more biomass than it has
+            //Debug.Assert(-(cohort.Biomass) < biomassChange);  // Cohort can't loss more biomass than it has
 
             cohort.ChangeBiomass(biomassChange);
 
@@ -247,7 +247,8 @@ namespace Landis.Library.BiomassCohorts
                 return index + 1;
             }
             else {
-                RemoveCohort(index, cohort, site, null);
+                ExtensionType temp = new ExtensionType("aspen_mortality");
+                RemoveCohort(index, cohort, site, temp);
                 return index;
             }
         }
