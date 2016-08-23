@@ -44,6 +44,34 @@ namespace Landis.Library.BiomassCohorts
         }
 
         //---------------------------------------------------------------------
+        public int CurrentFoliage
+        {
+            get
+            {
+                return data.CurrentFoliage;
+            }
+        }
+
+        //---------------------------------------------------------------------
+        public int TotalFoliage
+        {
+            get
+            {
+                return data.TotalFoliage;
+            }
+        }
+
+        //---------------------------------------------------------------------
+
+        public double[] DefoliationHistory
+        {
+            get
+            {
+                return data.DefoliationHistory;
+            }
+        }
+
+        //---------------------------------------------------------------------
 
         /// <summary>
         /// The cohort's age and biomass data.
@@ -60,11 +88,17 @@ namespace Landis.Library.BiomassCohorts
 
         public Cohort(ISpecies species,
                       ushort   age,
-                      int   biomass)
+                      int   biomass,
+                       double [] defoliationHistory,
+            int currentFoliage,
+            int totalFoliage)
         {
             this.species = species;
             this.data.Age = age;
             this.data.Biomass = biomass;
+            this.data.DefoliationHistory = defoliationHistory;
+            this.data.CurrentFoliage = currentFoliage;
+            this.data.TotalFoliage = totalFoliage;
         }
 
         //---------------------------------------------------------------------
@@ -147,5 +181,41 @@ namespace Landis.Library.BiomassCohorts
             if (AgeOnlyDeathEvent != null)
                 AgeOnlyDeathEvent(sender, new DeathEventArgs(cohort, site, disturbanceType));
         }
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Changes the cohort's current foliage.
+        /// </summary>
+        public void ChangeCurrentFoliage(int newFoliage)
+        {
+            data.CurrentFoliage = newFoliage;
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Changes the cohort's total foliage.
+        /// </summary>
+        public void ChangeTotalFoliage(int newFoliage)
+        {
+            data.TotalFoliage = newFoliage;
+        }
+
+        //---------------------------------------------------------------------
+        /// <summary>
+        /// Update the defoliation history.
+        /// </summary>
+        public void UpdateDefoliationHistory(double propDefoliation)
+        {
+            double[] newDefolHistory = new double[10];
+            newDefolHistory[0] = propDefoliation;
+
+            for (int i = 0; i < 9;i++ )
+            {
+                newDefolHistory[i + 1] = data.DefoliationHistory[i];
+               
+            }
+            data.DefoliationHistory = newDefolHistory;
+        }
+
+        //---------------------------------------------------------------------
     }
 }
