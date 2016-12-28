@@ -274,6 +274,14 @@ namespace Landis.Library.BiomassCohorts
             Cohort.Died(this, cohort, site, disturbanceType);
         }
 
+        private void ReduceCohort(int index,
+                                  ICohort cohort,
+                                  ActiveSite site,
+                                  ExtensionType disturbanceType, float reduction)
+        {
+            //cohortData.RemoveAt(index);
+            Cohort.PartialMortality(this, cohort, site, disturbanceType, reduction);
+        }
         //---------------------------------------------------------------------
 
         /// <summary>
@@ -316,6 +324,9 @@ namespace Landis.Library.BiomassCohorts
                     if (reduction < cohort.Biomass) {
                         cohort.ChangeBiomass(-reduction);
                         cohortData[i] = cohort.Data;
+                        //ReduceCohort(i, cohort, disturbance.CurrentSite,disturbance.Type, reduction);
+                        Console.WriteLine("  Partial Reduction: {0}, {1} yrs, {2} Mg/ha", cohort.Species.Name, cohort.Age, cohort.Biomass);
+                        
                     }
                     else {
                         RemoveCohort(i, cohort, disturbance.CurrentSite,

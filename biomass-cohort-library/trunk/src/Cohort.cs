@@ -112,6 +112,22 @@ namespace Landis.Library.BiomassCohorts
         /// disturbances.
         /// </summary>
         public static event DeathEventHandler<DeathEventArgs> DeathEvent;
+        //---------------------------------------------------------------------
+        public static event PartialDeathEventHandler<PartialDeathEventArgs> PartialDeathEvent;
+
+        /// <summary>
+        /// Scheller TESTING 12/2016
+        /// Raises a Cohort.DeathEvent if partial mortality.
+        /// </summary>
+        public static void PartialMortality(object sender,
+                                ICohort cohort,
+                                ActiveSite site,
+                                ExtensionType disturbanceType,
+                                float reduction)
+        {
+            if (PartialDeathEvent != null)
+                PartialDeathEvent(sender, new PartialDeathEventArgs(cohort, site, disturbanceType, reduction));
+        }
 
         //---------------------------------------------------------------------
 

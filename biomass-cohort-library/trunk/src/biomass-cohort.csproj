@@ -63,7 +63,9 @@
     <Compile Include="CohortDefoliation.cs" />
     <Compile Include="CohortGrowthReduction.cs" />
     <Compile Include="Cohorts.cs" />
+    <Compile Include="PartialDeathEventArgs.cs" />
     <Compile Include="DeathEventArgs.cs" />
+    <Compile Include="PartialDeathEventHandler.cs" />
     <Compile Include="DeathEventHandler.cs" />
     <Compile Include="DisturbanceEventArgs.cs" />
     <Compile Include="DisturbanceEventHandler.cs" />
@@ -91,7 +93,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(LANDIS_SDK)\staging\copy-to-build-dir.cmd" "$(ProjectDir)staging-list.txt" $(OutDir)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>call $(SolutionDir)\install-libs.cmd</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
