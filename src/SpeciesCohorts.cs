@@ -323,8 +323,10 @@ namespace Landis.Library.BiomassCohorts
                     totalReduction += reduction;
                     if (reduction < cohort.Biomass) {
                         float reductionPercent = (float)reduction / (float)cohort.Biomass;
+                        // cohort.ChangeBiomass(-reduction); reduces the LIVE biomass of a cohort by an amount caused by partial mortality. This is not the same as ReduceCohort below.
                         cohort.ChangeBiomass(-reduction);
                         cohortData[i] = cohort.Data;
+                        // ReduceCohort calls PartialMortality, which adds dead wood biomass to woody pool on the forest floor in the amount by which live cohorts were just reduced above. This needs a percent.
                         ReduceCohort(i,cohort,disturbance.CurrentSite,disturbance.Type,reductionPercent);
                         //ReduceCohort(i, cohort, disturbance.CurrentSite,disturbance.Type, reduction);
                         //Console.WriteLine("  Partial Reduction: {0}, {1} yrs, {2} Mg/ha, reductionPercent={3:0.0000}", cohort.Species.Name, cohort.Age, cohort.Biomass,reductionPercent);
