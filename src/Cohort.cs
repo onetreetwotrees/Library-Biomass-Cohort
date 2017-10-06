@@ -123,12 +123,10 @@ namespace Landis.Library.BiomassCohorts
                                 ICohort cohort,
                                 ActiveSite site,
                                 ExtensionType disturbanceType,
-            // JRF - Testing changing reduction to int to better capture biomass removed from live cohorts when ReduceOrKillBiomassCohorts is called.
-            //                    float reduction)
-                                  float reduction, int newStandingDeadBiomass)
+                                float reduction)
         {
             if (PartialDeathEvent != null)
-                PartialDeathEvent(sender, new PartialDeathEventArgs(cohort, site, disturbanceType, reduction, newStandingDeadBiomass));
+                PartialDeathEvent(sender, new PartialDeathEventArgs(cohort, site, disturbanceType, reduction));
         }
 
         //---------------------------------------------------------------------
