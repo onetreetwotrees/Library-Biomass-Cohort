@@ -277,10 +277,13 @@ namespace Landis.Library.BiomassCohorts
         private void ReduceCohort(int index,
                                   ICohort cohort,
                                   ActiveSite site,
-                                  ExtensionType disturbanceType, float reduction)
+        //                          ExtensionType disturbanceType, float reduction)
+        // JRF - Testing change - change 'reduction' to integer so that it is just captures the biomass removed from live cohorts for a partial mortality event, rather than recalculating again.
+                                    ExtensionType disturbanceType, float reduction, int newStandingDeadBiomass)
+
         {
             //cohortData.RemoveAt(index);
-            Cohort.PartialMortality(this, cohort, site, disturbanceType, reduction);
+            Cohort.PartialMortality(this, cohort, site, disturbanceType, reduction, newStandingDeadBiomass);
         }
         //---------------------------------------------------------------------
 
@@ -323,16 +326,21 @@ namespace Landis.Library.BiomassCohorts
                     totalReduction += reduction;
                     if (reduction < cohort.Biomass) {
                         float reductionPercent = (float)reduction / (float)cohort.Biomass;
+                        // ReduceCohort calls PartialMortality, which adds dead wood biomass to woody pool on the forest floor in the amount by which live cohorts were just reduced above. This needs a percent.
+                        //ReduceCohort(i, cohort, disturbance.CurrentSite, disturbance.Type, reductionPercent);
+                        // JRF - Testing. Try changing reduction used by ReduceCohort and PartialMortality to an integer value that is exactly the same as biomass removed from live cohorts. This requires changes to Biomass Succession Extensions.
+                        ReduceCohort(i, cohort, disturbance.CurrentSite, disturbance.Type, reductionPercent, reduction);
                         // cohort.ChangeBiomass(-reduction); reduces the LIVE biomass of a cohort by an amount caused by partial mortality. This is not the same as ReduceCohort below.
                         cohort.ChangeBiomass(-reduction);
                         cohortData[i] = cohort.Data;
-                        // ReduceCohort calls PartialMortality, which adds dead wood biomass to woody pool on the forest floor in the amount by which live cohorts were just reduced above. This needs a percent.
-                        ReduceCohort(i,cohort,disturbance.CurrentSite,disturbance.Type,reductionPercent);
                         //ReduceCohort(i, cohort, disturbance.CurrentSite,disturbance.Type, reduction);
                         //Console.WriteLine("  Partial Reduction: {0}, {1} yrs, {2} Mg/ha, reductionPercent={3:0.0000}", cohort.Species.Name, cohort.Age, cohort.Biomass,reductionPercent);
                         
                     }
                     else {
+                        // TESTING...ReduceCohort might be needed here as well (see above), to handle adding the dead wood from a partial mortality process to the forest floor woody pool, for when reductionPercent = 100%
+                        //ReduceCohort(i, cohort, disturbance.CurrentSite, disturbance.Type, (float)1.00);
+                        ReduceCohort(i, cohort, disturbance.CurrentSite, disturbance.Type, (float)1.00,reduction);
                         RemoveCohort(i, cohort, disturbance.CurrentSite,
                                      disturbance.Type);
                         cohort = null;
